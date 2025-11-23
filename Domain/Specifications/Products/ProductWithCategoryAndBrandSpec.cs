@@ -8,7 +8,12 @@ namespace Domain.Specifications.Products
         {
             Includes.Add(p => p.Brand);
             Includes.Add(p => p.Category);
-           
+
+        }
+        public ProductWithCategoryAndBrandSpec(int id) : base(p => p.Id == id)
+        {
+            Includes.Add(p => p.Brand);
+            Includes.Add(p => p.Category);
         }
     }
 }
