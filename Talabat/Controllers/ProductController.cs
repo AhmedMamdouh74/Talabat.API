@@ -16,10 +16,16 @@ namespace Talabat.API.Controllers
             repository = _repository;
         }
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<ActionResult<Product>> GetProducts()
         {
-            var products= await repository.GetAllAsync();
+            var products = await repository.GetAllAsync();
             return Ok(products);
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Product>> GetProductById(int id)
+        {
+            var product = await repository.GetByIdAsync(id);
+            return Ok(product);
         }
     }
 }
