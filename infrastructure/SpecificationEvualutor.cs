@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace infrastructure
 {
-    internal static class SpecificationEvualutor<TEntity> where TEntity : BaseEntity
+    internal static class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
     {
         public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> spec)
         {

@@ -1,11 +1,12 @@
 ﻿using Domain;
 using Domain.Concrats;
 using Domain.Entities;
+using Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace infrastructure.Repos
 {
-    public class GenericRepository<T, TK> : IGenericRepository<T, TK> where T : BaseEntity<TK>
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly AppDbContext dbContext;
 
@@ -15,24 +16,23 @@ namespace infrastructure.Repos
         }
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            if (typeof(T) == typeof(Product))
-
-                return (IReadOnlyList<T>)await dbContext.Set<Product>()
-                .Include(p => p.Category)
-                .Include(p => p.Brand)
-                .ToListAsync();
-
 
             return await dbContext.Set<T>().ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(TK id)
+        public async Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecification<T> spec)
         {
-            if (typeof(T) == typeof(Product)) return await dbContext.Set<Product>().Where(p => p.Id!.Equals(id))
-                .Include(p => p.Category)
-                .Include(p => p.Brand).FirstOrDefaultAsync() as T;
-            ;
+            return await SpecificationEvaluator<T>.GetQuery(dbContext.Set<T>(), spec).ToListAsync();
+        }
+
+        public async Task<T?> GetByIdAsync(int id)
+        {
             return await dbContext.Set<T>().FindAsync(id);
+        }
+
+        public async Task<T?> GetByIdWithSpecAsync(ISpecification<T> spec)
+        {
+            return await SpecificationEvaluator<T>.GetQuery(dbContext.Set<T>(), spec).FirstOrDefaultAsync();
         }
     }
 }
