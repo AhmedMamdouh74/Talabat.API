@@ -20,7 +20,7 @@ namespace infrastructure.Data.DI
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
 
             });
-            services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
             return services;
