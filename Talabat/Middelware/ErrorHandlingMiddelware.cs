@@ -1,8 +1,6 @@
 ﻿using Domain.Exceptions;
-using Microsoft.AspNetCore.Http;
-using System;
-using Talabat.API.Responses;
 using System.Text.Json;
+using Talabat.API.Responses;
 
 namespace Talabat.API.Middelware
 {
@@ -40,7 +38,7 @@ namespace Talabat.API.Middelware
                 ServerInternalException => StatusCodes.Status500InternalServerError,
                 _ => StatusCodes.Status500InternalServerError
             };
-            var error = new ErrorResponse
+            var errorResponse = new ErrorResponse
             {
                 StatusCode = status,
                 Message = status == StatusCodes.Status500InternalServerError ? "Internal Server Error" : ex.Message,
@@ -53,9 +51,9 @@ namespace Talabat.API.Middelware
             
             var options = new JsonSerializerOptions
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase // Ensures camelCase formatting for JSON properties to help frontend to deal with json data
             };
-            var jsonResponse = JsonSerializer.Serialize(error, options);
+            var jsonResponse = JsonSerializer.Serialize(errorResponse, options);
             await context.Response.WriteAsync(jsonResponse);
         }
     }
