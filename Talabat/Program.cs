@@ -1,6 +1,6 @@
 
-using Application.DI;  
-using Application.Mapping;
+using Application.DI;
+using infrastructure;
 using infrastructure.Data;
 using infrastructure.Data.DI;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Talabat
             // Add services to the container.
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
-         
+
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -44,9 +44,8 @@ namespace Talabat
             app.MapControllers();
 
             using var scope = app.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<infrastructure.AppDbContext>();
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
-
             try
             {
                 await context.Database.MigrateAsync();
