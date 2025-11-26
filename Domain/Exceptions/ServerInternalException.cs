@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Exceptions
 {
-    internal class ServerInternalException
+    public class ServerInternalException:Exception
     {
+        public ServerInternalException(string message):base(message) {}
     }
 }

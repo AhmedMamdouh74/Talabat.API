@@ -3,7 +3,11 @@ using Application.DI;
 using infrastructure;
 using infrastructure.Data;
 using infrastructure.Data.DI;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Talabat.API.Filters;
+using Talabat.API.Middelware;
+using Talabat.API.Responses;
 
 namespace Talabat
 {
@@ -18,12 +22,32 @@ namespace Talabat
             builder.Services.AddApplication();
 
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(
+          
+            );
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             //  builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState
+                    .Where(e => e.Value.Errors.Count > 0)
+                    .SelectMany(x => x.Value.Errors)
+                    .Select(x => x.ErrorMessage).ToArray();
+                    var errorResponse = new ValidationErrorReponse
+                    {
+                        Message = "invalid data",
+                        Errors = errors,
+                        StatusCode = 400
 
+                    };
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
+          
             var app = builder.Build();
 
 
@@ -34,13 +58,14 @@ namespace Talabat
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseMiddleware<ErrorHandlingMiddelware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseAuthorization();
 
 
+            app.UseMiddleware<NotFoundEndpointMiddelware>();
             app.MapControllers();
 
             using var scope = app.Services.CreateScope();

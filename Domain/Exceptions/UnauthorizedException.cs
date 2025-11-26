@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Exceptions
 {
-    internal class UnauthorizedException
+    public class UnauthorizedException: Exception
     {
+        public UnauthorizedException(string message) : base(message) { }
     }
 }

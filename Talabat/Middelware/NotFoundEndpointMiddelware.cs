@@ -1,4 +1,6 @@
-﻿namespace Talabat.API.Middelware
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Talabat.API.Middelware
 {
     public class NotFoundEndpointMiddelware
     {
@@ -10,7 +12,9 @@
         }
         public async Task InvokeAsync(HttpContext context)
         {
+            Console.WriteLine("before middelware from not found");
             await request(context);
+            Console.WriteLine("after middelware from not found");
             if (context.Response.StatusCode == StatusCodes.Status404NotFound&&!context.Response.HasStarted)
             {
                 var errorResponse = new

@@ -7,9 +7,9 @@ namespace Talabat.API.Middelware
     public class ErrorHandlingMiddelware
     {
         private readonly RequestDelegate request;
-        private readonly ILogger logger;
+        private readonly ILogger<ErrorHandlingMiddelware> logger;
 
-        public ErrorHandlingMiddelware(RequestDelegate _request, ILogger _logger)
+        public ErrorHandlingMiddelware(RequestDelegate _request, ILogger<ErrorHandlingMiddelware> _logger)
         {
             request = _request;
             logger = _logger;

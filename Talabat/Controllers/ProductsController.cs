@@ -16,27 +16,33 @@ namespace Talabat.API.Controllers
         private readonly IGenericRepository<Product> repository;
         private readonly IMapper mapper;
 
-        public ProductsController(IGenericRepository<Product> _repository,IMapper _mapper)
+        public ProductsController(IGenericRepository<Product> _repository, IMapper _mapper)
         {
             repository = _repository;
             mapper = _mapper;
-          
+
         }
         [HttpGet]
-        public async Task<ActionResult<ReadProductDto>> GetProducts()
-{
-            var spec=new ProductWithCategoryAndBrandSpec();
+        public async Task<ActionResult<List<ReadProductDto>>> GetProducts()
+        {
+            var spec = new ProductWithCategoryAndBrandSpec();
             var products = await repository.GetAllWithSpecAsync(spec);
-            var records= mapper.Map<List<ReadProductDto>>(products);
-            return Ok(records);
+            if (products == null || products.Count == 0)
+                return Error("resourses not found", StatusCodes.Status404NotFound);
+            var records = mapper.Map<List<ReadProductDto>>(products);
+            return Success(records);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<ReadProductDto>> GetProductById(int id)
         {
+         
             var spec = new ProductWithCategoryAndBrandSpec(id);
             var product = await repository.GetByIdWithSpecAsync(spec);
+            
+            if (product == null)
+                return Error("resourse not found", StatusCodes.Status404NotFound);
             var record = mapper.Map<ReadProductDto>(product);
-            return Ok(record);
+            return Success(record);
         }
     }
 }
