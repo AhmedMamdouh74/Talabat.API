@@ -23,13 +23,13 @@ namespace Talabat.API.Controllers
 
         }
         [HttpGet]
-        public async Task<ActionResult<List<ReadProductDto>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ReadProductDto>>> GetProducts()
         {
             var spec = new ProductWithCategoryAndBrandSpec();
             var products = await repository.GetAllWithSpecAsync(spec);
             if (products == null || products.Count == 0)
                 return Error("resourses not found", StatusCodes.Status404NotFound);
-            var records = mapper.Map<List<ReadProductDto>>(products);
+            var records = mapper.Map<IReadOnlyList<ReadProductDto>>(products);
             return Success(records);
         }
         [HttpGet("{id}")]
