@@ -4,9 +4,26 @@ namespace Domain.Specifications.Products
 {
     public class ProductWithCategoryAndBrandSpec : BaseSpecification<Product>
     {
-        public ProductWithCategoryAndBrandSpec()
+        public ProductWithCategoryAndBrandSpec(string sort)
         {
             AddIncludes();
+            if (string.IsNullOrEmpty(sort))
+            {
+                AddOrderByAsc(p => p.Name);
+                return;
+            }
+            else switch (sort)
+                {
+                    case "priceAsc":
+                        AddOrderByAsc(p => p.Price);
+                        break;
+                    case "priceDesc":
+                        AddOrderByDesc(p => p.Price);
+                        break; 
+                    default:
+                        AddOrderByAsc(p => p.Name);
+                        break;
+                }
 
         }
 

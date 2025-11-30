@@ -14,6 +14,15 @@ namespace infrastructure
             {
                 query = query.Where(spec.Criteria);
             }
+            // Includes all orderby expressions
+            if (spec.OrderBy != null)
+            {
+                query = query.OrderBy(spec.OrderBy);
+            }
+            else if (spec.OrderByDesc != null)
+            {
+                query = query.OrderByDescending(spec.OrderByDesc);
+            }
             // Includes all expression-based includes
             query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
             return query;
