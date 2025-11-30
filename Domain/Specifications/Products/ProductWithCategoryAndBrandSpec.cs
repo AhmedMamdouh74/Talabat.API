@@ -4,7 +4,7 @@ namespace Domain.Specifications.Products
 {
     public class ProductWithCategoryAndBrandSpec : BaseSpecification<Product>
     {
-        public ProductWithCategoryAndBrandSpec(string sort)
+        public ProductWithCategoryAndBrandSpec(string? sort, int? brandId, int? categoryId) : base(p => (!brandId.HasValue || p.BrandId == brandId) && (!categoryId.HasValue || p.CategoryId == categoryId))
         {
             AddIncludes();
             if (string.IsNullOrEmpty(sort))
@@ -19,7 +19,7 @@ namespace Domain.Specifications.Products
                         break;
                     case "priceDesc":
                         AddOrderByDesc(p => p.Price);
-                        break; 
+                        break;
                     default:
                         AddOrderByAsc(p => p.Name);
                         break;
@@ -27,7 +27,7 @@ namespace Domain.Specifications.Products
 
         }
 
-       
+
 
         public ProductWithCategoryAndBrandSpec(int id) : base(p => p.Id == id)
         {
