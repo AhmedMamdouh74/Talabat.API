@@ -23,7 +23,7 @@ namespace Talabat.API.Controllers
 
         }
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ReadProductDto>>> GetProducts([FromQuery] string? sort,int? brandId,int? categoryId)
+        public async Task<ActionResult<IReadOnlyList<ReadProductDto>>> GetProducts( string? sort,int? brandId,int? categoryId)
         {
 
             var spec = new ProductWithCategoryAndBrandSpec(sort,brandId,categoryId);
