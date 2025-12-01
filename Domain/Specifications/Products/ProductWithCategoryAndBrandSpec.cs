@@ -4,7 +4,10 @@ namespace Domain.Specifications.Products
 {
     public class ProductWithCategoryAndBrandSpec : BaseSpecification<Product>
     {
-        public ProductWithCategoryAndBrandSpec(ProductSpecParams specParams) : base(p => ( !specParams.BrandId.HasValue || p.BrandId == specParams.BrandId) && (!specParams.CategoryId.HasValue || p.CategoryId == specParams.CategoryId))
+        public ProductWithCategoryAndBrandSpec(ProductSpecParams specParams) : base(p =>
+        (string.IsNullOrEmpty(specParams.Search) || p.Name.Contains(specParams.Search))
+        && (!specParams.BrandId.HasValue || p.BrandId == specParams.BrandId)
+        && (!specParams.CategoryId.HasValue || p.CategoryId == specParams.CategoryId))
         {
             AddIncludes();
             ApplyPagination((specParams.PageIndex - 1) * specParams.PageSize, specParams.PageSize);
@@ -25,7 +28,7 @@ namespace Domain.Specifications.Products
                         AddOrderByAsc(p => p.Name);
                         break;
                 }
-           
+
 
         }
 
