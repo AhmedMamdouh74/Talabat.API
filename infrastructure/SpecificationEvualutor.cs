@@ -19,9 +19,15 @@ namespace infrastructure
             {
                 query = query.OrderBy(spec.OrderBy);
             }
+
             else if (spec.OrderByDesc != null)
             {
                 query = query.OrderByDescending(spec.OrderByDesc);
+            }
+            // Apply paging if enabled
+            if (spec.IsPaginationEnabled)
+            {
+                query = query.Skip(spec.Skip).Take(spec.Take);
             }
             // Includes all expression-based includes
             query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));

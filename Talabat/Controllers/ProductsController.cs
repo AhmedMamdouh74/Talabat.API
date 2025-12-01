@@ -23,10 +23,10 @@ namespace Talabat.API.Controllers
 
         }
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ReadProductDto>>> GetProducts( string? sort,int? brandId,int? categoryId)
+        public async Task<ActionResult<IReadOnlyList<ReadProductDto>>> GetProducts([FromQuery] ProductSpecParams specParams)
         {
 
-            var spec = new ProductWithCategoryAndBrandSpec(sort,brandId,categoryId);
+            var spec = new ProductWithCategoryAndBrandSpec(specParams);
             var products = await repository.GetAllWithSpecAsync(spec);
             if (products == null || !products.Any())
                 return Error("resourses not found", StatusCodes.Status404NotFound);
@@ -34,12 +34,12 @@ namespace Talabat.API.Controllers
             return Success(records);
         }
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ReadProductDto>> GetProductById( int id)
+        public async Task<ActionResult<ReadProductDto>> GetProductById(int id)
         {
-         
+
             var spec = new ProductWithCategoryAndBrandSpec(id);
             var product = await repository.GetByIdWithSpecAsync(spec);
-            
+
             if (product == null)
                 return Error("resourse not found", StatusCodes.Status404NotFound);
             var record = mapper.Map<ReadProductDto>(product);
