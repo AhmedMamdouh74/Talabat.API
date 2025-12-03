@@ -6,6 +6,7 @@ using Domain.Specifications;
 using Domain.Specifications.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Talabat.API.Responses;
 
 namespace Talabat.API.Controllers
 {
@@ -23,15 +24,21 @@ namespace Talabat.API.Controllers
 
         }
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ReadProductDto>>> GetProducts([FromQuery] ProductSpecParams specParams)
+        public async Task<ActionResult<PagedResult<ReadProductDto>>> GetProducts([FromQuery] ProductSpecParams specParams)
         {
 
             var spec = new ProductWithCategoryAndBrandSpec(specParams);
             var products = await repository.GetAllWithSpecAsync(spec);
             if (products == null || !products.Any())
                 return Error("resourses not found", StatusCodes.Status404NotFound);
+            var filteredSpec = new ProductWithFilterationAndCountSpec(specParams);
+            var count=await repository.GetCountWithSpecAsync(filteredSpec);
             var records = mapper.Map<IReadOnlyList<ReadProductDto>>(products);
-            return Success(records);
+            var pagedResult = new PagedResult<ReadProductDto>(specParams.PageIndex, specParams.PageSize, count)
+            {
+                Items = records
+            };
+            return Success(pagedResult);
         }
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ReadProductDto>> GetProductById(int id)
