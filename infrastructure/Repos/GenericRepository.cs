@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Domain.Concrats;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Specifications;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,6 @@
 ﻿using Domain.Specifications;
 
-namespace Domain.Concrats
+namespace Domain.Contracts
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {

@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Product;
 using AutoMapper;
-using Domain.Concrats;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Specifications;
 using Domain.Specifications.Products;
