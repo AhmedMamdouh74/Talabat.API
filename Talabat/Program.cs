@@ -1,8 +1,11 @@
 
 using Application.DI;
+using Domain.Entities.Identity;
 using infrastructure;
 using infrastructure.Data;
 using infrastructure.Data.DI;
+using infrastructure.Identity.DataSeed;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Talabat.API.Filters;
@@ -20,6 +23,8 @@ namespace Talabat
             // Add services to the container.
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
+            //builder.Services.AddIdentity<AppUser,IdentityRole>()
+            //    .AddEntityFrameworkStores<infrastructure.Identity.AppIdentityDbContext>();  
 
 
             builder.Services.AddControllers(
@@ -70,11 +75,14 @@ namespace Talabat
 
             using var scope = app.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var identityContext = scope.ServiceProvider.GetRequiredService<infrastructure.Identity.AppIdentityDbContext>();
             var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
             try
             {
                 await context.Database.MigrateAsync();
                 await StoreDataSeed.SeedAsync(context);
+                await identityContext.Database.MigrateAsync();
+                await AppIdentityDataSeed.SeedUsersAndRolesAsync(scope.ServiceProvider);
             }
             catch (Exception ex)
             {

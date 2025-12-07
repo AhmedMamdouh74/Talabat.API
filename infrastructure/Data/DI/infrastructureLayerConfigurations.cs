@@ -1,14 +1,12 @@
 ﻿using Domain.Contracts;
+using Domain.Entities.Identity;
+using infrastructure.Identity;
 using infrastructure.Repos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace infrastructure.Data.DI
 {
@@ -21,6 +19,10 @@ namespace infrastructure.Data.DI
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
 
             });
+            services.AddDbContext<AppIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"));
+            });
             services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
             {
                 var connection = configuration.GetConnectionString("redis");
@@ -28,12 +30,23 @@ namespace infrastructure.Data.DI
                 {
                     throw new InvalidOperationException("Redis connection string is not configured.");
                 }
-                
+
                 return ConnectionMultiplexer.Connect(connection);
             });
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IBasketRepository, BasketRepository>();
 
+            // FIX: Add the required Identity services using AddIdentityCore and AddRoles
+            services.AddIdentityCore<AppUser>(options =>
+            {
+                options.Password.RequiredUniqueChars = 2;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredLength = 6;
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             return services;
         }
