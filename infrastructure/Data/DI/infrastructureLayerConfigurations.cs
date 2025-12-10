@@ -3,6 +3,7 @@ using Domain.Entities.Identity;
 using infrastructure.Identity;
 using infrastructure.Repos;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,16 +38,24 @@ namespace infrastructure.Data.DI
             services.AddScoped<IBasketRepository, BasketRepository>();
 
             // FIX: Add the required Identity services using AddIdentityCore and AddRoles
-            services.AddIdentityCore<AppUser>(options =>
-            {
-                options.Password.RequiredUniqueChars = 2;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequiredLength = 6;
-            })
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<AppIdentityDbContext>();
+            //services.AddIdentityCore<AppUser>(options =>
+            //{
+            //    options.Password.RequiredUniqueChars = 2;
+            //    options.Password.RequireNonAlphanumeric = true;
+            //    options.Password.RequireUppercase = true;
+            //    options.Password.RequireLowercase = true;
+            //    options.Password.RequiredLength = 6;
+            //})
+            //.AddRoles<IdentityRole>()
+            //.AddEntityFrameworkStores<AppIdentityDbContext>();
+            //services.AddIdentity<AppUser, IdentityRole>(options =>
+            //{
+            //    options.Password.RequiredUniqueChars = 2;
+            //    options.Password.RequireNonAlphanumeric = true;
+            //    options.Password.RequireUppercase = true;
+            //    options.Password.RequireLowercase = true;
+            //    options.Password.RequiredLength = 6;
+            //});
 
             return services;
         }

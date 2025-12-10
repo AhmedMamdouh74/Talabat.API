@@ -23,8 +23,8 @@ namespace Talabat
             // Add services to the container.
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
-            //builder.Services.AddIdentity<AppUser,IdentityRole>()
-            //    .AddEntityFrameworkStores<infrastructure.Identity.AppIdentityDbContext>();  
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<infrastructure.Identity.AppIdentityDbContext>();
 
 
             builder.Services.AddControllers(
