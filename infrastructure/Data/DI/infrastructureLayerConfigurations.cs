@@ -36,6 +36,7 @@ namespace infrastructure.Data.DI
             });
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped(typeof( IUnitOfWork), typeof( UnitOfWork));
 
             // FIX: Add the required Identity services using AddIdentityCore and AddRoles
             //services.AddIdentityCore<AppUser>(options =>
