@@ -13,7 +13,7 @@
             Quantity = _quantity;
         }
 
-        public ProductOrderedItem? Product { get; set; }
+        public ProductOrderedItem Product { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         

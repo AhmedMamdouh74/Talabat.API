@@ -19,7 +19,7 @@
         public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public Address ShipToAddress { get; set; }
-        public DeliveryMethod DeliveryMethod { get; set; }
+        public DeliveryMethod? DeliveryMethod { get; set; }
         public ICollection<OrderItem>? OrderItems { get; set; } = new HashSet<OrderItem>();
         public decimal Subtotal { get; set; }
         // for derived attribute, not mapped to DB

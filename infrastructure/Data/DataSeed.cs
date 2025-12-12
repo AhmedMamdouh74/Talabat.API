@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Order_Aggregate;
 using System.Text.Json;
 
 namespace infrastructure.Data
@@ -27,6 +28,13 @@ namespace infrastructure.Data
                 var jsonData = await File.ReadAllTextAsync("../infrastructure/Data/DataSeed/brands.json");
                 var brands = JsonSerializer.Deserialize<List<Brand>>(jsonData) ?? new List<Brand>();
                 context.Brands.AddRange(brands);
+
+            }
+            if (!context.DeliveryMethods.Any())
+            {
+                var jsonData = await File.ReadAllTextAsync("../infrastructure/Data/DataSeed/delivery.json");
+                var deliveries = JsonSerializer.Deserialize<List<DeliveryMethod>>(jsonData) ?? new List<DeliveryMethod>();
+                context.DeliveryMethods.AddRange(deliveries);
 
             }
             await context.SaveChangesAsync();

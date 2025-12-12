@@ -12,8 +12,8 @@ using infrastructure;
 namespace infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251211154859_order module")]
-    partial class ordermodule
+    [Migration("20251211231058_edit order entity")]
+    partial class editorderentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,17 +71,20 @@ namespace infrastructure.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DeliveryTime")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryMethod");
+                    b.ToTable("DeliveryMethods");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order_Aggregate.Order", b =>
@@ -96,7 +99,7 @@ namespace infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DeliveryMethodId")
+                    b.Property<int?>("DeliveryMethodId")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("OrderDate")
@@ -117,7 +120,7 @@ namespace infrastructure.Data.Migrations
 
                     b.HasIndex("DeliveryMethodId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order_Aggregate.OrderItem", b =>
@@ -141,7 +144,7 @@ namespace infrastructure.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -188,8 +191,7 @@ namespace infrastructure.Data.Migrations
                     b.HasOne("Domain.Entities.Order_Aggregate.DeliveryMethod", "DeliveryMethod")
                         .WithMany()
                         .HasForeignKey("DeliveryMethodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsOne("Domain.Entities.Order_Aggregate.Address", "ShipToAddress", b1 =>
                         {
@@ -199,29 +201,26 @@ namespace infrastructure.Data.Migrations
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasColumnName("City");
+                                .HasColumnType("nvarchar(100)");
 
                             b1.Property<string>("Country")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("FName")
                                 .IsRequired()
                                 .HasMaxLength(60)
-                                .HasColumnType("nvarchar(60)")
-                                .HasColumnName("FName");
+                                .HasColumnType("nvarchar(60)");
 
                             b1.Property<string>("LName")
                                 .IsRequired()
                                 .HasMaxLength(60)
-                                .HasColumnType("nvarchar(60)")
-                                .HasColumnName("LName");
+                                .HasColumnType("nvarchar(60)");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
                                 .HasMaxLength(180)
-                                .HasColumnType("nvarchar(180)")
-                                .HasColumnName("Street");
+                                .HasColumnType("nvarchar(180)");
 
                             b1.HasKey("OrderId");
 
@@ -251,18 +250,15 @@ namespace infrastructure.Data.Migrations
                             b1.Property<string>("PictureUrl")
                                 .IsRequired()
                                 .HasMaxLength(180)
-                                .HasColumnType("nvarchar(180)")
-                                .HasColumnName("PictureUrl");
+                                .HasColumnType("nvarchar(180)");
 
                             b1.Property<int>("ProductItemId")
-                                .HasColumnType("int")
-                                .HasColumnName("ProductItemId");
+                                .HasColumnType("int");
 
                             b1.Property<string>("ProductName")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)")
-                                .HasColumnName("ProductName");
+                                .HasColumnType("nvarchar(100)");
 
                             b1.HasKey("OrderItemId");
 
@@ -272,7 +268,8 @@ namespace infrastructure.Data.Migrations
                                 .HasForeignKey("OrderItemId");
                         });
 
-                    b.Navigation("Product");
+                    b.Navigation("Product")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>

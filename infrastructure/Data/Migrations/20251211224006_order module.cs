@@ -12,19 +12,19 @@ namespace infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DeliveryMethod",
+                name: "DeliveryMethods",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ShortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShortName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DeliveryTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DeliveryTime = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DeliveryMethod", x => x.Id);
+                    table.PrimaryKey("PK_DeliveryMethods", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -36,12 +36,12 @@ namespace infrastructure.Data.Migrations
                     BuyerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    LName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(180)", maxLength: 180, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ShipToAddress_Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeliveryMethodId = table.Column<int>(type: "int", nullable: false),
+                    ShipToAddress_FName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    ShipToAddress_LName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    ShipToAddress_Street = table.Column<string>(type: "nvarchar(180)", maxLength: 180, nullable: false),
+                    ShipToAddress_City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ShipToAddress_Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeliveryMethodId = table.Column<int?>(type: "int", nullable: true),
                     Subtotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -49,11 +49,11 @@ namespace infrastructure.Data.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_DeliveryMethod_DeliveryMethodId",
+                        name: "FK_Orders_DeliveryMethods_DeliveryMethodId",
                         column: x => x.DeliveryMethodId,
-                        principalTable: "DeliveryMethod",
+                        principalTable: "DeliveryMethods",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,9 +62,9 @@ namespace infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductItemId = table.Column<int>(type: "int", nullable: true),
-                    ProductName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    PictureUrl = table.Column<string>(type: "nvarchar(180)", maxLength: 180, nullable: true),
+                    Product_ProductItemId = table.Column<int>(type: "int", nullable: false),
+                    Product_ProductName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Product_PictureUrl = table.Column<string>(type: "nvarchar(180)", maxLength: 180, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: true)
@@ -100,7 +100,7 @@ namespace infrastructure.Data.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "DeliveryMethod");
+                name: "DeliveryMethods");
         }
     }
 }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Application.DTOs
 {
-    public class Category:BaseEntity
+    public class OrderDto
     {
-        public string Name { get; set; }
+       
     }
 }

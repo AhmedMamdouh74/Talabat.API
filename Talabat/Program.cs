@@ -31,7 +31,7 @@ namespace Talabat
           
             );
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            //  builder.Services.AddOpenApi();
+            //  builder.OrderService.AddOpenApi();
             builder.Services.AddSwaggerGen();
 
             builder.Services.Configure<ApiBehaviorOptions>(options =>
