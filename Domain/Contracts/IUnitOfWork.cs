@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Contracts
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork:IAsyncDisposable 
     {
+        IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity;
+        Task<int> CompleteAsync();
     }
 }

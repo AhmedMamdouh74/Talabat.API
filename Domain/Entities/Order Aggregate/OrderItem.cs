@@ -6,7 +6,7 @@
         {
         }
 
-        public OrderItem(ProductOrderedItem? _product, decimal _price, int _quantity)
+        public OrderItem(ProductOrderedItem _product, decimal _price, int _quantity)
         {
             Product = _product;
             Price = _price;
