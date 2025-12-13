@@ -14,6 +14,17 @@ namespace infrastructure.Repos
         {
             dbContext = _dbContext;
         }
+
+        public async Task AddAsync(T entity)
+        {
+            await dbContext.Set<T>().AddAsync(entity);
+        }
+
+        public void Delete(T entity)
+        {
+           dbContext.Set<T>().Remove(entity);
+        }
+
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
 
@@ -38,6 +49,11 @@ namespace infrastructure.Repos
         public async Task<int> GetCountWithSpecAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).CountAsync();
+        }
+
+        public void Update(T entity)
+        {
+            dbContext.Set<T>().Update(entity);
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)

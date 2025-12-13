@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entities.Order_Aggregate;
 
 namespace Domain.Specifications.Orders
 {
-    internal class OrderWithBuyerEmailSpec
+    public class OrderWithBuyerEmailSpec : BaseSpecification<Order>
     {
+        public OrderWithBuyerEmailSpec(string buyerEmail) : base(o => o.BuyerEmail == buyerEmail)
+        {
+            AddInclude(o => o.OrderItems);
+            AddInclude(o => o.DeliveryMethod);
+        }
     }
 }

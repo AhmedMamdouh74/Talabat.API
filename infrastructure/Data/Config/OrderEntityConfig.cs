@@ -14,8 +14,8 @@ namespace infrastructure.Data.Config
                 a.WithOwner(); // 1:1 [total]
                 a.Property(p => p.Street).IsRequired().HasMaxLength(180);
                 a.Property(p => p.City).IsRequired().HasMaxLength(100);
-                a.Property(p => p.FName).IsRequired().HasMaxLength(60);
-                a.Property(p => p.LName).IsRequired().HasMaxLength(60);
+                a.Property(p => p.FirstName).IsRequired().HasMaxLength(60);
+                a.Property(p => p.LastName).IsRequired().HasMaxLength(60);
 
             });
 

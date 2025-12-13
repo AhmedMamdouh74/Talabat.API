@@ -40,8 +40,8 @@ namespace Domain.Specifications.Products
         }
         private void AddIncludes()
         {
-            Includes.Add(p => p.Brand);
-            Includes.Add(p => p.Category);
+            AddInclude(p => p.Brand);
+            AddInclude(p => p.Category);
         }
     }
 }

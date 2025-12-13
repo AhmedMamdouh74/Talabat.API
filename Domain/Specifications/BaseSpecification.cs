@@ -16,6 +16,10 @@ namespace Domain.Specifications
         public BaseSpecification()
         {
         }
+        public void AddInclude(Expression<Func<T, object>> includeExpression)
+        {
+            Includes.Add(includeExpression);
+        }
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;

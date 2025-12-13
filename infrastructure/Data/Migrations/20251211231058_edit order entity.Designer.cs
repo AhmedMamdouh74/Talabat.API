@@ -207,12 +207,12 @@ namespace infrastructure.Data.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.Property<string>("FName")
+                            b1.Property<string>("FirstName")
                                 .IsRequired()
                                 .HasMaxLength(60)
                                 .HasColumnType("nvarchar(60)");
 
-                            b1.Property<string>("LName")
+                            b1.Property<string>("LastName")
                                 .IsRequired()
                                 .HasMaxLength(60)
                                 .HasColumnType("nvarchar(60)");
